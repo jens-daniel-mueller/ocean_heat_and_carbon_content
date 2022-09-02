@@ -503,16 +503,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreeecc37d4976db28ab9810839c41031c821c325f8ctargetblankecc37d4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/ecc37d4976db28ab9810839c41031c821c325f8c" target="_blank">ecc37d4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree3c0927d4c13ecb6e8b8093087a97c1c8d877ab3etargetblank3c0927da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/3c0927d4c13ecb6e8b8093087a97c1c8d877ab3e" target="_blank">3c0927d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreeecc37d4976db28ab9810839c41031c821c325f8ctargetblankecc37d4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree3c0927d4c13ecb6e8b8093087a97c1c8d877ab3etargetblank3c0927da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/ecc37d4976db28ab9810839c41031c821c325f8c" target="_blank">ecc37d4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/3c0927d4c13ecb6e8b8093087a97c1c8d877ab3e" target="_blank">3c0927d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -562,6 +562,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/3c0927d4c13ecb6e8b8093087a97c1c8d877ab3e/analysis/read_ohc_data.Rmd" target="_blank">3c0927d</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+annotated anaylsis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/ocean_heat_and_carbon_content/9d34eda8529741fd2e198e8966df4eb51c37e92c/docs/read_ohc_data.html" target="_blank">9d34eda</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -875,6 +909,7 @@ ohc_stars &lt;- read_stars(paste0(path_ohc,
 </li>
 <li>and focus on the 1980 - 2019 period</li>
 </ul>
+<p>The regridding is done by calculating the mean values according within the coarser spatio-temporal grid.</p>
 <pre class="r"><code># horizontal regridding
 r5 = st_as_stars(st_bbox(ohc_stars), dx = 5, dy = 5)
 ohc_stars_mean = st_warp(ohc_stars, r5)
@@ -893,6 +928,7 @@ ohc_stars_mean &lt;- st_set_dimensions(ohc_stars_mean, &quot;time&quot;, values 
 </div>
 <div id="total-ohc-column-inventories" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Total OHC column inventories</h1>
+<p>Below, we’re plotting the regridded column inventories of the total OHC for the 5 integration depth limits and the four decades since 1980.</p>
 <pre class="r"><code>for (i_name in names(ohc_stars_mean)) {
   # i_name &lt;- names(ohc_stars_mean)[1]
   
@@ -1163,8 +1199,10 @@ jens-daniel-mueller
 </div>
 <div id="decadal-changes" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Decadal changes</h1>
+<p>Next, we’re calculating the decadal difference between the OHC column inventories for the different integration depth limits.</p>
 <div id="full-column-inventories" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Full column inventories</h2>
+<p>Below, we plotted the decadal column inventory changes of the OHC, integrated from the surface to the given integration depth limit (rows in the panel plots).</p>
 <pre class="r"><code>ohc_decade &lt;- ohc_stars_mean %&gt;% 
   as_tibble()
 
@@ -1269,6 +1307,7 @@ jens-daniel-mueller
 </div>
 <div id="depth-layer-column-inventories" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Depth layer column inventories</h2>
+<p>Here, we’re plotting decadal OHC changes for individual depth layers, i.e. we’re subtracting the shallower column inventory (eg 700m) from each deeper level (eg 1500m) to derive the changes occuring between the layers (eg between 700 and 1500m).</p>
 <div id="integrated-change" class="section level3" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Integrated change</h3>
 <pre class="r"><code>ohc_decade_change_layer &lt;- ohc_decade_change %&gt;%
@@ -1320,6 +1359,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/9d34eda8529741fd2e198e8966df4eb51c37e92c/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" target="_blank">9d34eda</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/dd1132177abb09dd66a7467c067ef759a18b9c43/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" target="_blank">dd11321</a>
 </td>
 <td>
@@ -1358,6 +1408,7 @@ jens-daniel-mueller
 </div>
 <div id="concentration-change" class="section level3" number="4.2.2">
 <h3><span class="header-section-number">4.2.2</span> Concentration change</h3>
+<p>To account for the different thickness of the depth layer, we’re dividing the integrated change across the full vertical extend of the layer by it’s thickness, i.e. we derive a mean OHC change of the layer in concentration units.</p>
 <pre class="r"><code>ohc_decade_change_layer %&gt;%
   ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m * 1e3)) +
   geom_raster() +
@@ -1395,6 +1446,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/9d34eda8529741fd2e198e8966df4eb51c37e92c/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_concentration-1.png" target="_blank">9d34eda</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/8f2b2309c8abee114c8e193682956b351dd31d6f/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_concentration-1.png" target="_blank">8f2b230</a>
