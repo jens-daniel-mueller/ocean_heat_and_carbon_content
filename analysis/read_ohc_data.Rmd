@@ -33,6 +33,13 @@ theme_set(theme_bw())
 
 # Read data
 
+Observation-based estimates of the ocean heat content (OHC) were downloaded from:
+http://www.ocean.iap.ac.cn
+
+Latest relevant publication:
+Cheng et al. (2022)
+https://doi.org/10.1175/JCLI-D-21-0895.1
+
 ```{r paths}
 
 path_ohc <-
@@ -60,59 +67,97 @@ ohc_stars <- read_stars(paste0(path_ohc,
                         along = list(date = dates_ohc),
                         quiet = TRUE)
 
+```
+
+# Regridding
+
+OHC data are originally provided:
+- with monthly resolution
+- on a 1x1 degree horizontal grid
+- integration depth of 100, 300, 700, 1500, and 2000m
+- for the period 1960 - 2021
+
+For the purpose of this exploratory analysis, we regrid the data to:
+- decadal resolution
+- a 5x5 degree horizontal grid
+- and focus on the 1980 - 2019 period
+
+```{r regridding}
+
+# horizontal regridding
 r5 = st_as_stars(st_bbox(ohc_stars), dx = 5, dy = 5)
-ohc_stars = st_warp(ohc_stars, r5)
+ohc_stars_mean = st_warp(ohc_stars, r5)
 rm(r5)
 
-# ohc_stars <-
-#   st_downsample(ohc_stars, c(5, 5, 0))
-
+# aggregate to decades
 ohc_stars_mean <- 
-  aggregate(ohc_stars, by = decades_ohc, FUN = mean, na.rm = TRUE)
-
-# decades_ohc <- head(decades_ohc, -1)
+  aggregate(ohc_stars_mean, by = decades_ohc, FUN = mean, na.rm = TRUE)
 
 ohc_stars_mean <- ohc_stars_mean %>%
   slice(time, 1:length(decades_ohc)-1)
+
+decades_ohc <- paste0(str_sub(st_get_dimension_values(ohc_stars_mean, "time"), 1,4), "s")
+ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc)
+
 
 ggplot() +
   geom_stars(data = ohc_stars_mean) +
   facet_wrap(~time) +
   coord_quickmap(expand = 0) +
-  scale_fill_viridis_b()
+  scale_fill_viridis_b() +
+  theme(axis.title = element_blank())
 
+
+
+```
+
+# Decadal changes
+
+## Total column inventories
+
+```{r decadal_changes_total_column_inventories, fig.asp=1}
 
 ohc_decade <- ohc_stars_mean %>% 
   as_tibble()
 
+ohc_decade <- ohc_decade %>% 
+  rename(lat = y,
+         lon = x,
+         decade = time)
+
 ohc_decade_change <- ohc_decade %>%
-  arrange(time) %>%
+  arrange(decade) %>%
   pivot_longer(
     starts_with("OHC"),
     values_to = "OHC",
     names_to = "depth",
     names_prefix = "OHC"
   ) %>% 
-  mutate(depth = as.numeric(depth),
-         decade = paste0(year(time),"s")) %>% 
-  group_by(x,y,depth) %>% 
+  mutate(depth = as.numeric(depth)) %>% 
+  group_by(lon,lat,depth) %>% 
   mutate(delta_OHC = OHC - lag(OHC),
          delta_decade = paste(lag(decade), decade, sep = "-")) %>% 
   ungroup() %>% 
-  filter(time != min(time)) 
+  filter(decade != first(decade)) 
 
 ohc_decade_change %>% 
-  ggplot(aes(x, y, fill = delta_OHC)) +
+  ggplot(aes(lon, lat, fill = delta_OHC)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  facet_grid(depth~delta_decade)
+  facet_grid(depth~delta_decade) +
+  theme(axis.title = element_blank())
 
+```
+
+## Depth layer column inventories
+
+```{r decadal_changes_column_inventories_depth_layer, fig.asp=1}
 
 ohc_decade_change_layer <- ohc_decade_change %>%
   arrange(depth) %>%
-  group_by(x, y, delta_decade) %>%
+  group_by(lon, lat, delta_decade) %>%
   mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC),
          layer_thickness = depth - lag(depth),
          delta_OHC_layer_per_m = delta_OHC_layer / layer_thickness,
@@ -122,20 +167,28 @@ ohc_decade_change_layer <- ohc_decade_change %>%
   filter(layer != min("NA-100"))
   
 ohc_decade_change_layer %>% 
-  ggplot(aes(x, y, fill = delta_OHC_layer)) +
+  ggplot(aes(lon, lat, fill = delta_OHC_layer)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  facet_grid(layer~delta_decade)
+  facet_grid(layer~delta_decade) +
+  theme(axis.title = element_blank())
   
 ohc_decade_change_layer %>% 
-  ggplot(aes(x, y, fill = delta_OHC_layer_per_m)) +
+  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  facet_grid(layer~delta_decade)
+  facet_grid(layer~delta_decade) +
+  theme(axis.title = element_blank())
+
+```
+
+
+```{r coordinate_transformation, eval=FALSE}
+
 
 # st_crs(ohc_stars_mean) = 4326
 # st_transform(ohc_stars_mean, st_crs(9001))
