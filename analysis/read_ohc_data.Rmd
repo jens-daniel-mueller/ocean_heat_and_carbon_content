@@ -111,6 +111,7 @@ ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc
 ```{r absolute_column_inventories}
 
 
+
 for (i_name in names(ohc_stars_mean)) {
   # i_name <- names(ohc_stars_mean)[1]
   
@@ -118,13 +119,18 @@ for (i_name in names(ohc_stars_mean)) {
     ggplot() +
       geom_stars(data = ohc_stars_mean,
                  aes(x, y, fill = !!sym(i_name) / 1e10)) +
-      facet_wrap( ~ time) +
+      facet_wrap(~ time) +
       coord_quickmap(expand = 0) +
-      scale_fill_viridis_c(name = expression(OHC ~ (10 ^ 10 ~ J * m ^ -2))) +
+      scale_fill_viridis_b(name = expression(OHC ~ (10 ^ 10 ~ J * m ^ -2)),
+                           n.breaks = 10) +
       labs(title = paste(
         "Integration depth:", str_remove(i_name, "OHC")
       )) +
-      theme(axis.title = element_blank())
+      theme(
+        axis.title = element_blank(),
+        legend.position = "top",
+        legend.key.width = unit(2, 'cm')
+      )
   )
   
 }
@@ -199,40 +205,33 @@ ohc_decade_change_layer %>%
   ggplot(aes(lon, lat, fill = delta_OHC_layer)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = "RdBu",
+  scale_fill_binned_divergingx(palette = "RdBu",
                                    rev = TRUE,
                                    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
   facet_grid(layer~delta_decade) +
   theme(axis.title = element_blank(),
         legend.position = "top")
   
-ohc_decade_change_layer %>% 
-  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m)) +
-  geom_raster() +
-  coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3))) +
-  facet_grid(layer~delta_decade) +
-  theme(axis.title = element_blank(),
-        legend.position = "top")
-
 ```
 
 ### "Concentration" change
 
 ```{r decadal_changes_column_inventories_depth_layer_concentration, fig.asp=1}
 
-ohc_decade_change_layer %>% 
-  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m*1e3)) +
+ohc_decade_change_layer %>%
+  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m * 1e3)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 6 ~ J * m ^ -3))) +
-  facet_grid(layer~delta_decade) +
+  scale_fill_binned_divergingx(
+    palette = "RdBu",
+    rev = TRUE,
+    name = expression(Delta * OHC ~ (10 ^ 6 ~ J * m ^ -3)),
+    n.breaks = 10
+  ) +
+  facet_grid(layer ~ delta_decade) +
   theme(axis.title = element_blank(),
-        legend.position = "top")
+        legend.position = "top",
+        legend.key.width = unit(2, 'cm'))
 
 ```
 
