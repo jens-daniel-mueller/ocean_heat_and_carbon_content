@@ -33,11 +33,11 @@ theme_set(theme_bw())
 
 # Read data
 
-Observation-based estimates of the ocean heat content (OHC) were downloaded from:
+Observation-based estimates of the ocean heat content (OHC) were downloaded from:  
 http://www.ocean.iap.ac.cn
 
-Latest relevant publication:
-Cheng et al. (2022)
+Latest relevant publication:  
+Cheng et al. (2022)  
 https://doi.org/10.1175/JCLI-D-21-0895.1
 
 ```{r paths}
@@ -71,16 +71,18 @@ ohc_stars <- read_stars(paste0(path_ohc,
 
 # Regridding
 
-OHC data are originally provided:
-- with monthly resolution
-- on a 1x1 degree horizontal grid
-- integration depth of 100, 300, 700, 1500, and 2000m
+OHC data are originally provided:  
+
+- with monthly resolution  
+- on a 1x1 degree horizontal grid  
+- integration depth of 100, 300, 700, 1500, and 2000m  
 - for the period 1960 - 2021
 
-For the purpose of this exploratory analysis, we regrid the data to:
-- decadal resolution
-- a 5x5 degree horizontal grid
-- and focus on the 1980 - 2019 period
+For the purpose of this exploratory analysis, we regrid the data to:  
+
+- decadal resolution  
+- a 5x5 degree horizontal grid  
+- and focus on the 1980 - 2019 period  
 
 ```{r regridding}
 
@@ -96,8 +98,18 @@ ohc_stars_mean <-
 ohc_stars_mean <- ohc_stars_mean %>%
   slice(time, 1:length(decades_ohc)-1)
 
+# convert decade label
 decades_ohc <- paste0(str_sub(st_get_dimension_values(ohc_stars_mean, "time"), 1,4), "s")
 ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc)
+
+
+
+```
+
+# Total OHC column inventories
+
+```{r absolute_column_inventories}
+
 
 for (i_name in names(ohc_stars_mean)) {
   # i_name <- names(ohc_stars_mean)[1]
@@ -117,11 +129,8 @@ for (i_name in names(ohc_stars_mean)) {
   
 }
 
-
-
-
-
 ```
+
 
 # Decadal changes
 
@@ -152,20 +161,28 @@ ohc_decade_change <- ohc_decade %>%
   ungroup() %>% 
   filter(decade != first(decade)) 
 
-ohc_decade_change %>% 
+ohc_decade_change <- ohc_decade_change %>% 
+  mutate(delta_OHC = delta_OHC / 1e9)
+
+
+ohc_decade_change %>%
   ggplot(aes(lon, lat, fill = delta_OHC)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE) +
-  facet_grid(depth~delta_decade) +
-  theme(axis.title = element_blank())
+                                   rev = TRUE,
+                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
+  facet_grid(depth ~ delta_decade) +
+  theme(axis.title = element_blank(),
+        legend.position = "top")
 
 ```
 
 ## Depth layer column inventories
 
-```{r decadal_changes_column_inventories_depth_layer, fig.asp=1}
+### Total change
+
+```{r decadal_changes_column_inventories_depth_layer_total, fig.asp=1}
 
 ohc_decade_change_layer <- ohc_decade_change %>%
   arrange(depth) %>%
@@ -183,18 +200,39 @@ ohc_decade_change_layer %>%
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE) +
+                                   rev = TRUE,
+                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
   facet_grid(layer~delta_decade) +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank(),
+        legend.position = "top")
   
 ohc_decade_change_layer %>% 
   ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE) +
+                                   rev = TRUE,
+                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3))) +
   facet_grid(layer~delta_decade) +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank(),
+        legend.position = "top")
+
+```
+
+### "Concentration" change
+
+```{r decadal_changes_column_inventories_depth_layer_concentration, fig.asp=1}
+
+ohc_decade_change_layer %>% 
+  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m*1e3)) +
+  geom_raster() +
+  coord_quickmap(expand = 0) +
+  scale_fill_continuous_divergingx(palette = "RdBu",
+                                   rev = TRUE,
+                                   name = expression(Delta * OHC ~ (10 ^ 6 ~ J * m ^ -3))) +
+  facet_grid(layer~delta_decade) +
+  theme(axis.title = element_blank(),
+        legend.position = "top")
 
 ```
 
