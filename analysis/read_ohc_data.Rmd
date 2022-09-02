@@ -1,0 +1,138 @@
+---
+title: "Read OHC data"
+author: "Jens Daniel Müller"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  workflowr::wflow_html:
+    number_sections: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+editor_options:
+  chunk_output_type: console
+---
+
+```{r libraries}
+library(stars)
+library(tidyverse)
+```
+
+
+# Read data
+
+```{r paths}
+
+path_ohc <-
+  "/nfs/kryo/work/updata/cheng/IAP_Ocean_heat_content_0_2000m/"
+
+path_root           <-
+  "/nfs/kryo/work/jenmueller/ocean_heat_and_carbon_content/data_preprocessed"
+
+```
+
+
+```{r read_ohc_data, warning=FALSE, fig.asp=1}
+
+files_ohc <- list.files(path_ohc,
+                        pattern = "OHC_")
+
+files_ohc <- files_ohc[481:961]
+dates_ohc <- as.Date(paste(str_sub(files_ohc, 22, 25), str_sub(files_ohc, 33, 34),"15", sep = "/"),
+                     format = "%Y/%m/%d")
+
+decades_ohc <- dates_ohc[seq(1,length(dates_ohc),120)]
+
+ohc_stars <- read_stars(paste0(path_ohc,
+                               files_ohc),
+                        along = list(date = dates_ohc),
+                        quiet = TRUE)
+
+r5 = st_as_stars(st_bbox(ohc_stars), dx = 5, dy = 5)
+ohc_stars = st_warp(ohc_stars, r5)
+rm(r5)
+
+# ohc_stars <-
+#   st_downsample(ohc_stars, c(5, 5, 0))
+
+ohc_stars_mean <- 
+  aggregate(ohc_stars, by = decades_ohc, FUN = mean, na.rm = TRUE)
+
+# decades_ohc <- head(decades_ohc, -1)
+
+ohc_stars_mean <- ohc_stars_mean %>%
+  slice(time, 1:length(decades_ohc)-1)
+
+ggplot() +
+  geom_stars(data = ohc_stars_mean) +
+  facet_wrap(~time) +
+  coord_quickmap(expand = 0) +
+  scale_fill_viridis_b() +
+  theme_bw()
+
+
+ohc_decade <- ohc_stars_mean %>% 
+  as_tibble()
+
+library(colorspace)
+library(lubridate)
+
+ohc_decade_change <- ohc_decade %>%
+  arrange(time) %>%
+  pivot_longer(
+    starts_with("OHC"),
+    values_to = "OHC",
+    names_to = "depth",
+    names_prefix = "OHC"
+  ) %>% 
+  mutate(depth = as.numeric(depth),
+         decade = paste0(year(time),"s")) %>% 
+  group_by(x,y,depth) %>% 
+  mutate(delta_OHC = OHC - lag(OHC),
+         delta_decade = paste(decade, lag(decade), sep = "-")) %>% 
+  ungroup() %>% 
+  filter(time != min(time)) 
+
+ohc_decade_change %>% 
+  ggplot(aes(x, y, fill = delta_OHC)) +
+  geom_raster() +
+  coord_quickmap(expand = 0) +
+  scale_fill_continuous_divergingx(palette = "RdBu",
+                                   rev = TRUE) +
+  theme_bw() +
+  facet_grid(depth~delta_decade)
+
+
+ohc_decade_change_layer <- ohc_decade_change %>%
+  arrange(depth) %>%
+  group_by(x, y, delta_decade) %>%
+  mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC),
+         layer_thickness = depth - lag(depth),
+         delta_OHC_layer_per_m = delta_OHC_layer / layer_thickness,
+         layer = paste(depth, lag(depth), sep = "-"),
+         layer = fct_inorder(layer)) %>%
+  ungroup() %>%
+  filter(layer != min("100-NA"))
+  
+ohc_decade_change_layer %>% 
+  ggplot(aes(x, y, fill = delta_OHC_layer)) +
+  geom_raster() +
+  coord_quickmap(expand = 0) +
+  scale_fill_continuous_divergingx(palette = "RdBu",
+                                   rev = TRUE) +
+  theme_bw() +
+  facet_grid(layer~delta_decade)
+  
+ohc_decade_change_layer %>% 
+  ggplot(aes(x, y, fill = delta_OHC_layer_per_m)) +
+  geom_raster() +
+  coord_quickmap(expand = 0) +
+  scale_fill_continuous_divergingx(palette = "RdBu",
+                                   rev = TRUE) +
+  theme_bw() +
+  facet_grid(layer~delta_decade)
+
+# st_crs(ohc_stars_mean) = 4326
+# st_transform(ohc_stars_mean, st_crs(9001))
+
+```
+
