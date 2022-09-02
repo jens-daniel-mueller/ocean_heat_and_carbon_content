@@ -99,13 +99,25 @@ ohc_stars_mean <- ohc_stars_mean %>%
 decades_ohc <- paste0(str_sub(st_get_dimension_values(ohc_stars_mean, "time"), 1,4), "s")
 ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc)
 
+for (i_name in names(ohc_stars_mean)) {
+  # i_name <- names(ohc_stars_mean)[1]
+  
+  print(
+    ggplot() +
+      geom_stars(data = ohc_stars_mean,
+                 aes(x, y, fill = !!sym(i_name) / 1e10)) +
+      facet_wrap( ~ time) +
+      coord_quickmap(expand = 0) +
+      scale_fill_viridis_c(name = expression(OHC ~ (10 ^ 10 ~ J * m ^ -2))) +
+      labs(title = paste(
+        "Integration depth:", str_remove(i_name, "OHC")
+      )) +
+      theme(axis.title = element_blank())
+  )
+  
+}
 
-ggplot() +
-  geom_stars(data = ohc_stars_mean) +
-  facet_wrap(~time) +
-  coord_quickmap(expand = 0) +
-  scale_fill_viridis_b() +
-  theme(axis.title = element_blank())
+
 
 
 
