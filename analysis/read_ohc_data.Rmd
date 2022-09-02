@@ -186,7 +186,7 @@ ohc_decade_change %>%
   scale_fill_binned_divergingx(
     palette = "RdBu",
     rev = TRUE,
-    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3)),
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
     n.breaks = 10
   ) +
   facet_grid(depth ~ delta_decade) +
@@ -221,7 +221,7 @@ ohc_decade_change_layer %>%
   scale_fill_binned_divergingx(
     palette = "RdBu",
     rev = TRUE,
-    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3)),
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
     n.breaks = 10
   ) +
   facet_grid(layer ~ delta_decade) +
