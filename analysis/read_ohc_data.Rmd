@@ -140,7 +140,7 @@ for (i_name in names(ohc_stars_mean)) {
 
 # Decadal changes
 
-## Total column inventories
+## Full column inventories
 
 ```{r decadal_changes_total_column_inventories, fig.asp=1}
 
@@ -190,20 +190,19 @@ ohc_decade_change %>%
 
 ## Depth layer column inventories
 
-### Total change
+### Integrated change
 
 ```{r decadal_changes_column_inventories_depth_layer_total, fig.asp=1}
 
 ohc_decade_change_layer <- ohc_decade_change %>%
   arrange(depth) %>%
   group_by(lon, lat, delta_decade) %>%
-  mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC),
-         layer_thickness = depth - lag(depth),
+  mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC, default = 0),
+         layer_thickness = depth - lag(depth, default = 0),
          delta_OHC_layer_per_m = delta_OHC_layer / layer_thickness,
-         layer = paste(lag(depth), depth, sep = "-"),
+         layer = paste(lag(depth, default = 0), depth, sep = "-"),
          layer = fct_inorder(layer)) %>%
-  ungroup() %>%
-  filter(layer != min("NA-100"))
+  ungroup()
   
 ohc_decade_change_layer %>% 
   ggplot(aes(lon, lat, fill = delta_OHC_layer)) +
@@ -222,7 +221,7 @@ ohc_decade_change_layer %>%
   
 ```
 
-### "Concentration" change
+### Concentration change
 
 ```{r decadal_changes_column_inventories_depth_layer_concentration, fig.asp=1}
 
