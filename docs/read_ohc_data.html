@@ -342,7 +342,7 @@ div.tocify {
       <ul class="nav navbar-nav">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    data base
+    Data base
      
     <span class="caret"></span>
   </a>
@@ -503,16 +503,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree11f0e38d27337b566d42523bdd2acfa4445e0064targetblank11f0e38a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/11f0e38d27337b566d42523bdd2acfa4445e0064" target="_blank">11f0e38</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreee2622256cfe323b5a823e821fa7d0bf246599e6btargetblanke262225a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/e2622256cfe323b5a823e821fa7d0bf246599e6b" target="_blank">e262225</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree11f0e38d27337b566d42523bdd2acfa4445e0064targetblank11f0e38a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreee2622256cfe323b5a823e821fa7d0bf246599e6btargetblanke262225a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/11f0e38d27337b566d42523bdd2acfa4445e0064" target="_blank">11f0e38</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/e2622256cfe323b5a823e821fa7d0bf246599e6b" target="_blank">e262225</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -567,6 +567,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/e2622256cfe323b5a823e821fa7d0bf246599e6b/analysis/read_ohc_data.Rmd" target="_blank">e262225</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+cleaned code
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/ocean_heat_and_carbon_content/28691524fd956573cc030d5a71ebbdeb3291235b/docs/read_ohc_data.html" target="_blank">2869152</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/11f0e38d27337b566d42523bdd2acfa4445e0064/analysis/read_ohc_data.Rmd" target="_blank">11f0e38</a>
 </td>
 <td>
@@ -586,19 +620,11 @@ computed decadal changes per depth layer
 </div>
 </div>
 </div>
-<pre class="r"><code>library(stars)</code></pre>
-<pre><code>Loading required package: abind</code></pre>
-<pre><code>Loading required package: sf</code></pre>
-<pre><code>Linking to GEOS 3.6.2, GDAL 3.2.0, PROJ 7.0.0; sf_use_s2() is TRUE</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-✓ tibble  3.1.6     ✓ dplyr   1.0.7
-✓ tidyr   1.1.4     ✓ stringr 1.4.0
-✓ readr   2.1.1     ✓ forcats 0.5.1</code></pre>
-<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(stars)
+library(tidyverse)
+library(colorspace)
+library(lubridate)</code></pre>
+<pre class="r"><code>theme_set(theme_bw())</code></pre>
 <div id="read-data" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Read data</h1>
 <pre class="r"><code>path_ohc &lt;-
@@ -639,20 +665,49 @@ ggplot() +
   geom_stars(data = ohc_stars_mean) +
   facet_wrap(~time) +
   coord_quickmap(expand = 0) +
-  scale_fill_viridis_b() +
-  theme_bw()</code></pre>
+  scale_fill_viridis_b()</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/read_ohc_data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-read_ohc_data-1">
+Past versions of read_ohc_data-1.png
+</button>
+</p>
+<div id="fig-read_ohc_data-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/28691524fd956573cc030d5a71ebbdeb3291235b/docs/figure/read_ohc_data.Rmd/read_ohc_data-1.png" target="_blank">2869152</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ohc_decade &lt;- ohc_stars_mean %&gt;% 
   as_tibble()
 
-library(colorspace)
-library(lubridate)</code></pre>
-<pre><code>
-Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:base&#39;:
-
-    date, intersect, setdiff, union</code></pre>
-<pre class="r"><code>ohc_decade_change &lt;- ohc_decade %&gt;%
+ohc_decade_change &lt;- ohc_decade %&gt;%
   arrange(time) %&gt;%
   pivot_longer(
     starts_with(&quot;OHC&quot;),
@@ -664,7 +719,7 @@ Attaching package: &#39;lubridate&#39;</code></pre>
          decade = paste0(year(time),&quot;s&quot;)) %&gt;% 
   group_by(x,y,depth) %&gt;% 
   mutate(delta_OHC = OHC - lag(OHC),
-         delta_decade = paste(decade, lag(decade), sep = &quot;-&quot;)) %&gt;% 
+         delta_decade = paste(lag(decade), decade, sep = &quot;-&quot;)) %&gt;% 
   ungroup() %&gt;% 
   filter(time != min(time)) 
 
@@ -674,19 +729,55 @@ ohc_decade_change %&gt;%
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(depth~delta_decade)</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/read_ohc_data-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-read_ohc_data-2">
+Past versions of read_ohc_data-2.png
+</button>
+</p>
+<div id="fig-read_ohc_data-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/28691524fd956573cc030d5a71ebbdeb3291235b/docs/figure/read_ohc_data.Rmd/read_ohc_data-2.png" target="_blank">2869152</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ohc_decade_change_layer &lt;- ohc_decade_change %&gt;%
   arrange(depth) %&gt;%
   group_by(x, y, delta_decade) %&gt;%
   mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC),
          layer_thickness = depth - lag(depth),
          delta_OHC_layer_per_m = delta_OHC_layer / layer_thickness,
-         layer = paste(depth, lag(depth), sep = &quot;-&quot;),
+         layer = paste(lag(depth), depth, sep = &quot;-&quot;),
          layer = fct_inorder(layer)) %&gt;%
   ungroup() %&gt;%
-  filter(layer != min(&quot;100-NA&quot;))
+  filter(layer != min(&quot;NA-100&quot;))
   
 ohc_decade_change_layer %&gt;% 
   ggplot(aes(x, y, fill = delta_OHC_layer)) +
@@ -694,18 +785,90 @@ ohc_decade_change_layer %&gt;%
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(layer~delta_decade)</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/read_ohc_data-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-read_ohc_data-3">
+Past versions of read_ohc_data-3.png
+</button>
+</p>
+<div id="fig-read_ohc_data-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/28691524fd956573cc030d5a71ebbdeb3291235b/docs/figure/read_ohc_data.Rmd/read_ohc_data-3.png" target="_blank">2869152</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ohc_decade_change_layer %&gt;% 
   ggplot(aes(x, y, fill = delta_OHC_layer_per_m)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(layer~delta_decade)</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/read_ohc_data-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-read_ohc_data-4">
+Past versions of read_ohc_data-4.png
+</button>
+</p>
+<div id="fig-read_ohc_data-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/28691524fd956573cc030d5a71ebbdeb3291235b/docs/figure/read_ohc_data.Rmd/read_ohc_data-4.png" target="_blank">2869152</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># st_crs(ohc_stars_mean) = 4326
 # st_transform(ohc_stars_mean, st_crs(9001))</code></pre>
 <br>
