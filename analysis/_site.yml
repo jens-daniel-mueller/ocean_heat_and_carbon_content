@@ -3,7 +3,7 @@ output_dir: ../docs
 navbar:
   title: OHCC
   left:
-  - text: data base
+  - text: Data base
     menu:
     - text: OHC
       href: read_ohc_data.html

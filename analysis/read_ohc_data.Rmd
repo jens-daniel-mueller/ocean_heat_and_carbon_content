@@ -12,9 +12,22 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+
 ```{r libraries}
 library(stars)
 library(tidyverse)
+library(colorspace)
+library(lubridate)
+```
+
+```{r set_theme}
+
+theme_set(theme_bw())
+
 ```
 
 
@@ -31,7 +44,7 @@ path_root           <-
 ```
 
 
-```{r read_ohc_data, warning=FALSE, fig.asp=1}
+```{r read_ohc_data, fig.asp=1}
 
 files_ohc <- list.files(path_ohc,
                         pattern = "OHC_")
@@ -66,15 +79,11 @@ ggplot() +
   geom_stars(data = ohc_stars_mean) +
   facet_wrap(~time) +
   coord_quickmap(expand = 0) +
-  scale_fill_viridis_b() +
-  theme_bw()
+  scale_fill_viridis_b()
 
 
 ohc_decade <- ohc_stars_mean %>% 
   as_tibble()
-
-library(colorspace)
-library(lubridate)
 
 ohc_decade_change <- ohc_decade %>%
   arrange(time) %>%
@@ -88,7 +97,7 @@ ohc_decade_change <- ohc_decade %>%
          decade = paste0(year(time),"s")) %>% 
   group_by(x,y,depth) %>% 
   mutate(delta_OHC = OHC - lag(OHC),
-         delta_decade = paste(decade, lag(decade), sep = "-")) %>% 
+         delta_decade = paste(lag(decade), decade, sep = "-")) %>% 
   ungroup() %>% 
   filter(time != min(time)) 
 
@@ -98,7 +107,6 @@ ohc_decade_change %>%
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(depth~delta_decade)
 
 
@@ -108,10 +116,10 @@ ohc_decade_change_layer <- ohc_decade_change %>%
   mutate(delta_OHC_layer = delta_OHC - lag(delta_OHC),
          layer_thickness = depth - lag(depth),
          delta_OHC_layer_per_m = delta_OHC_layer / layer_thickness,
-         layer = paste(depth, lag(depth), sep = "-"),
+         layer = paste(lag(depth), depth, sep = "-"),
          layer = fct_inorder(layer)) %>%
   ungroup() %>%
-  filter(layer != min("100-NA"))
+  filter(layer != min("NA-100"))
   
 ohc_decade_change_layer %>% 
   ggplot(aes(x, y, fill = delta_OHC_layer)) +
@@ -119,7 +127,6 @@ ohc_decade_change_layer %>%
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(layer~delta_decade)
   
 ohc_decade_change_layer %>% 
@@ -128,7 +135,6 @@ ohc_decade_change_layer %>%
   coord_quickmap(expand = 0) +
   scale_fill_continuous_divergingx(palette = "RdBu",
                                    rev = TRUE) +
-  theme_bw() +
   facet_grid(layer~delta_decade)
 
 # st_crs(ohc_stars_mean) = 4326
