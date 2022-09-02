@@ -84,6 +84,8 @@ For the purpose of this exploratory analysis, we regrid the data to:
 - a 5x5 degree horizontal grid  
 - and focus on the 1980 - 2019 period  
 
+The regridding is done by calculating the mean values according within the coarser spatio-temporal grid.
+
 ```{r regridding}
 
 # horizontal regridding
@@ -107,6 +109,8 @@ ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc
 ```
 
 # Total OHC column inventories
+
+Below, we're plotting the regridded column inventories of the total OHC for the 5 integration depth limits and the four decades since 1980.
 
 ```{r absolute_column_inventories}
 
@@ -140,7 +144,11 @@ for (i_name in names(ohc_stars_mean)) {
 
 # Decadal changes
 
+Next, we're calculating the decadal difference between the OHC column inventories for the different integration depth limits.
+
 ## Full column inventories
+
+Below, we plotted the decadal column inventory changes of the OHC, integrated from the surface to the given integration depth limit (rows in the panel plots).
 
 ```{r decadal_changes_total_column_inventories, fig.asp=1}
 
@@ -190,6 +198,8 @@ ohc_decade_change %>%
 
 ## Depth layer column inventories
 
+Here, we're plotting decadal OHC changes for individual depth layers, i.e. we're subtracting the shallower column inventory (eg 700m) from each deeper level (eg 1500m) to derive the changes occuring between the layers (eg between 700 and 1500m).
+
 ### Integrated change
 
 ```{r decadal_changes_column_inventories_depth_layer_total, fig.asp=1}
@@ -222,6 +232,8 @@ ohc_decade_change_layer %>%
 ```
 
 ### Concentration change
+
+To account for the different thickness of the depth layer, we're dividing the integrated change across the full vertical extend of the layer by it's thickness, i.e. we derive a mean OHC change of the layer in concentration units.
 
 ```{r decadal_changes_column_inventories_depth_layer_concentration, fig.asp=1}
 
