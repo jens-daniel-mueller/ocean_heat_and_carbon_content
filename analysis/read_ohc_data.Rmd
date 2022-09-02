@@ -175,12 +175,16 @@ ohc_decade_change %>%
   ggplot(aes(lon, lat, fill = delta_OHC)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = "RdBu",
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
+  scale_fill_binned_divergingx(
+    palette = "RdBu",
+    rev = TRUE,
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3)),
+    n.breaks = 10
+  ) +
   facet_grid(depth ~ delta_decade) +
   theme(axis.title = element_blank(),
-        legend.position = "top")
+        legend.position = "top",
+        legend.key.width = unit(2, 'cm'))
 
 ```
 
@@ -205,12 +209,16 @@ ohc_decade_change_layer %>%
   ggplot(aes(lon, lat, fill = delta_OHC_layer)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_binned_divergingx(palette = "RdBu",
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
-  facet_grid(layer~delta_decade) +
+  scale_fill_binned_divergingx(
+    palette = "RdBu",
+    rev = TRUE,
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3)),
+    n.breaks = 10
+  ) +
+  facet_grid(layer ~ delta_decade) +
   theme(axis.title = element_blank(),
-        legend.position = "top")
+        legend.position = "top",
+        legend.key.width = unit(2, 'cm'))
   
 ```
 
