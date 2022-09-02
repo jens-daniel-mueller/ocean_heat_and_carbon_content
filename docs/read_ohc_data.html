@@ -503,16 +503,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree3128baa0d20e0baf4b98310144f6417ce34d7300targetblank3128baaa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/3128baa0d20e0baf4b98310144f6417ce34d7300" target="_blank">3128baa</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree4d139a4c3a02563acbc4988439467d66977afe4ctargetblank4d139a4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/4d139a4c3a02563acbc4988439467d66977afe4c" target="_blank">4d139a4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree3128baa0d20e0baf4b98310144f6417ce34d7300targetblank3128baaa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree4d139a4c3a02563acbc4988439467d66977afe4ctargetblank4d139a4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/3128baa0d20e0baf4b98310144f6417ce34d7300" target="_blank">3128baa</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/4d139a4c3a02563acbc4988439467d66977afe4c" target="_blank">4d139a4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -562,6 +562,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/4d139a4c3a02563acbc4988439467d66977afe4c/analysis/read_ohc_data.Rmd" target="_blank">4d139a4</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+adapted color to binned scale
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/ocean_heat_and_carbon_content/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/read_ohc_data.html" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -798,17 +832,211 @@ ohc_stars_mean &lt;- st_set_dimensions(ohc_stars_mean, &quot;time&quot;, values 
     ggplot() +
       geom_stars(data = ohc_stars_mean,
                  aes(x, y, fill = !!sym(i_name) / 1e10)) +
-      facet_wrap( ~ time) +
+      facet_wrap(~ time) +
       coord_quickmap(expand = 0) +
-      scale_fill_viridis_c(name = expression(OHC ~ (10 ^ 10 ~ J * m ^ -2))) +
+      scale_fill_viridis_b(name = expression(OHC ~ (10 ^ 10 ~ J * m ^ -2)),
+                           n.breaks = 10) +
       labs(title = paste(
         &quot;Integration depth:&quot;, str_remove(i_name, &quot;OHC&quot;)
       )) +
-      theme(axis.title = element_blank())
+      theme(
+        axis.title = element_blank(),
+        legend.position = &quot;top&quot;,
+        legend.key.width = unit(2, &#39;cm&#39;)
+      )
   )
   
 }</code></pre>
-<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-3.png" width="672" style="display: block; margin: auto;" /><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-4.png" width="672" style="display: block; margin: auto;" /><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-absolute_column_inventories-1">
+Past versions of absolute_column_inventories-1.png
+</button>
+</p>
+<div id="fig-absolute_column_inventories-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/absolute_column_inventories-1.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-absolute_column_inventories-2">
+Past versions of absolute_column_inventories-2.png
+</button>
+</p>
+<div id="fig-absolute_column_inventories-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/absolute_column_inventories-2.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-absolute_column_inventories-3">
+Past versions of absolute_column_inventories-3.png
+</button>
+</p>
+<div id="fig-absolute_column_inventories-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/absolute_column_inventories-3.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-absolute_column_inventories-4">
+Past versions of absolute_column_inventories-4.png
+</button>
+</p>
+<div id="fig-absolute_column_inventories-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/absolute_column_inventories-4.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><img src="figure/read_ohc_data.Rmd/absolute_column_inventories-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-absolute_column_inventories-5">
+Past versions of absolute_column_inventories-5.png
+</button>
+</p>
+<div id="fig-absolute_column_inventories-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/absolute_column_inventories-5.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="decadal-changes" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Decadal changes</h1>
@@ -876,6 +1104,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/decadal_changes_total_column_inventories-1.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/56ff3fec261ad2e38671d9b0ceeced4fd1026c9e/docs/figure/read_ohc_data.Rmd/decadal_changes_total_column_inventories-1.png" target="_blank">56ff3fe</a>
 </td>
 <td>
@@ -909,38 +1148,105 @@ ohc_decade_change_layer %&gt;%
   ggplot(aes(lon, lat, fill = delta_OHC_layer)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
+  scale_fill_binned_divergingx(palette = &quot;RdBu&quot;,
                                    rev = TRUE,
                                    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2))) +
   facet_grid(layer~delta_decade) +
   theme(axis.title = element_blank(),
         legend.position = &quot;top&quot;)</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>ohc_decade_change_layer %&gt;% 
-  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m)) +
-  geom_raster() +
-  coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -3))) +
-  facet_grid(layer~delta_decade) +
-  theme(axis.title = element_blank(),
-        legend.position = &quot;top&quot;)</code></pre>
-<p><img src="figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-decadal_changes_column_inventories_depth_layer_total-1">
+Past versions of decadal_changes_column_inventories_depth_layer_total-1.png
+</button>
+</p>
+<div id="fig-decadal_changes_column_inventories_depth_layer_total-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="concentration-change" class="section level3" number="4.2.2">
 <h3><span class="header-section-number">4.2.2</span> “Concentration” change</h3>
-<pre class="r"><code>ohc_decade_change_layer %&gt;% 
-  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m*1e3)) +
+<pre class="r"><code>ohc_decade_change_layer %&gt;%
+  ggplot(aes(lon, lat, fill = delta_OHC_layer_per_m * 1e3)) +
   geom_raster() +
   coord_quickmap(expand = 0) +
-  scale_fill_continuous_divergingx(palette = &quot;RdBu&quot;,
-                                   rev = TRUE,
-                                   name = expression(Delta * OHC ~ (10 ^ 6 ~ J * m ^ -3))) +
-  facet_grid(layer~delta_decade) +
+  scale_fill_binned_divergingx(
+    palette = &quot;RdBu&quot;,
+    rev = TRUE,
+    name = expression(Delta * OHC ~ (10 ^ 6 ~ J * m ^ -3)),
+    n.breaks = 10
+  ) +
+  facet_grid(layer ~ delta_decade) +
   theme(axis.title = element_blank(),
-        legend.position = &quot;top&quot;)</code></pre>
+        legend.position = &quot;top&quot;,
+        legend.key.width = unit(2, &#39;cm&#39;))</code></pre>
 <p><img src="figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_concentration-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-decadal_changes_column_inventories_depth_layer_concentration-1">
+Past versions of decadal_changes_column_inventories_depth_layer_concentration-1.png
+</button>
+</p>
+<div id="fig-decadal_changes_column_inventories_depth_layer_concentration-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/7b444c50f8a03ac899715fd4e2aa0d0554c5d140/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_concentration-1.png" target="_blank">7b444c5</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># st_crs(ohc_stars_mean) = 4326
 # st_transform(ohc_stars_mean, st_crs(9001))</code></pre>
 <br>
