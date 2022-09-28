@@ -89,21 +89,25 @@ The regridding is done by calculating the mean values according within the coars
 ```{r regridding}
 
 # horizontal regridding
-r5 = st_as_stars(st_bbox(ohc_stars), dx = 5, dy = 5)
+r5 = st_as_stars(st_bbox(ohc_stars), dx = 1, dy = 1)
 ohc_stars_mean = st_warp(ohc_stars, r5)
 rm(r5)
 
 # aggregate to decades
-ohc_stars_mean <- 
-  aggregate(ohc_stars_mean, by = decades_ohc, FUN = mean, na.rm = TRUE)
+ohc_stars_mean <-
+  aggregate(ohc_stars_mean,
+            by = decades_ohc,
+            FUN = mean,
+            na.rm = TRUE)
 
 ohc_stars_mean <- ohc_stars_mean %>%
-  slice(time, 1:length(decades_ohc)-1)
+  slice(time, 1:length(decades_ohc) - 1)
 
 # convert decade label
-decades_ohc <- paste0(str_sub(st_get_dimension_values(ohc_stars_mean, "time"), 1,4), "s")
-ohc_stars_mean <- st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc)
-
+decades_ohc <-
+  paste0(str_sub(st_get_dimension_values(ohc_stars_mean, "time"), 1, 4), "s")
+ohc_stars_mean <-
+  st_set_dimensions(ohc_stars_mean, "time", values = decades_ohc)
 
 
 ```
@@ -193,6 +197,52 @@ ohc_decade_change %>%
   theme(axis.title = element_blank(),
         legend.position = "top",
         legend.key.width = unit(2, 'cm'))
+
+p_CI_absolute <- ohc_decade_change %>%
+  filter(delta_decade != "1980s-1990s",
+         depth == 2000) %>% 
+  ggplot(aes(lon, lat, fill = delta_OHC)) +
+  geom_raster() +
+  coord_quickmap(expand = 0,
+                 ylim = c(-85,65)) +
+  scale_fill_binned_diverging(
+    palette = "Green-Brown",
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
+    breaks = seq(-2,2,0.5)
+  ) +
+  facet_wrap(~ delta_decade, ncol = 1) +
+  theme(axis.title = element_blank())
+
+p_CI_delta <- ohc_decade_change %>%
+  filter(delta_decade != "1980s-1990s",
+         depth == 2000) %>% 
+  arrange(delta_decade) %>% 
+  group_by(lon, lat) %>% 
+  mutate(delta_delta_OHC = delta_OHC - lag(delta_OHC),
+         delta_delta_decade = paste0("(",delta_decade,") - (", lag(delta_decade),")")) %>% 
+  ungroup() %>% 
+  filter(delta_decade == "2000s-2010s") %>% 
+  ggplot(aes(lon, lat, fill = delta_delta_OHC)) +
+  geom_raster() +
+  coord_quickmap(expand = 0,
+                 ylim = c(-85,65)) +
+  scale_fill_binned_divergingx(
+    palette = "RdBu",
+    rev = TRUE,
+    name = expression(Delta * Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
+    breaks = seq(-2,2,0.5)
+  ) +
+  facet_wrap(~ delta_delta_decade, ncol = 1) +
+  theme(axis.title = element_blank())
+
+library(patchwork)
+p_CI_absolute / p_CI_delta + 
+  plot_annotation(tag_levels = 'A')
+
+ggsave(path = here::here("output"),
+       filename = "FigS_OHC_column_inventory.png",
+       height = 10,
+       width = 8)
 
 ```
 
