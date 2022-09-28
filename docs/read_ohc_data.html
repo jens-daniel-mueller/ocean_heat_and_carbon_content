@@ -387,7 +387,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Read OHC data</h1>
 <h4 class="author">Jens Daniel Müller</h4>
-<h4 class="date">02 September, 2022</h4>
+<h4 class="date">28 September, 2022</h4>
 
 </div>
 
@@ -412,7 +412,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-09-02
+<strong>Last updated:</strong> 2022-09-28
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -503,16 +503,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreee9d55fbbafd59f41617452e8ce563aa20a8e2537targetblanke9d55fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/e9d55fbbafd59f41617452e8ce563aa20a8e2537" target="_blank">e9d55fb</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree56661a6f98f977e6f364b29ae108a9ce7fc5402dtargetblank56661a6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/56661a6f98f977e6f364b29ae108a9ce7fc5402d" target="_blank">56661a6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttreee9d55fbbafd59f41617452e8ce563aa20a8e2537targetblanke9d55fba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjensdanielmuelleroceanheatandcarboncontenttree56661a6f98f977e6f364b29ae108a9ce7fc5402dtargetblank56661a6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/e9d55fbbafd59f41617452e8ce563aa20a8e2537" target="_blank">e9d55fb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/tree/56661a6f98f977e6f364b29ae108a9ce7fc5402d" target="_blank">56661a6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -562,6 +562,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/56661a6f98f977e6f364b29ae108a9ce7fc5402d/analysis/read_ohc_data.Rmd" target="_blank">56661a6</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-28
+</td>
+<td>
+calculated decadal offsets, and increased resolution
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jens-daniel-mueller/ocean_heat_and_carbon_content/e53f770b4e0453f7da26de2e8d041fd1df5ac887/docs/read_ohc_data.html" target="_blank">e53f770</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -945,20 +979,25 @@ ohc_stars &lt;- read_stars(paste0(path_ohc,
 </ul>
 <p>The regridding is done by calculating the mean values according within the coarser spatio-temporal grid.</p>
 <pre class="r"><code># horizontal regridding
-r5 = st_as_stars(st_bbox(ohc_stars), dx = 5, dy = 5)
+r5 = st_as_stars(st_bbox(ohc_stars), dx = 1, dy = 1)
 ohc_stars_mean = st_warp(ohc_stars, r5)
 rm(r5)
 
 # aggregate to decades
-ohc_stars_mean &lt;- 
-  aggregate(ohc_stars_mean, by = decades_ohc, FUN = mean, na.rm = TRUE)
+ohc_stars_mean &lt;-
+  aggregate(ohc_stars_mean,
+            by = decades_ohc,
+            FUN = mean,
+            na.rm = TRUE)
 
 ohc_stars_mean &lt;- ohc_stars_mean %&gt;%
-  slice(time, 1:length(decades_ohc)-1)
+  slice(time, 1:length(decades_ohc) - 1)
 
 # convert decade label
-decades_ohc &lt;- paste0(str_sub(st_get_dimension_values(ohc_stars_mean, &quot;time&quot;), 1,4), &quot;s&quot;)
-ohc_stars_mean &lt;- st_set_dimensions(ohc_stars_mean, &quot;time&quot;, values = decades_ohc)</code></pre>
+decades_ohc &lt;-
+  paste0(str_sub(st_get_dimension_values(ohc_stars_mean, &quot;time&quot;), 1, 4), &quot;s&quot;)
+ohc_stars_mean &lt;-
+  st_set_dimensions(ohc_stars_mean, &quot;time&quot;, values = decades_ohc)</code></pre>
 </div>
 <div id="total-ohc-column-inventories" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Total OHC column inventories</h1>
@@ -1303,6 +1342,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/e53f770b4e0453f7da26de2e8d041fd1df5ac887/docs/figure/read_ohc_data.Rmd/decadal_changes_total_column_inventories-1.png" target="_blank">e53f770</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/dd1132177abb09dd66a7467c067ef759a18b9c43/docs/figure/read_ohc_data.Rmd/decadal_changes_total_column_inventories-1.png" target="_blank">dd11321</a>
 </td>
 <td>
@@ -1338,6 +1388,51 @@ jens-daniel-mueller
 </table>
 </div>
 </div>
+<pre class="r"><code>p_CI_absolute &lt;- ohc_decade_change %&gt;%
+  filter(delta_decade != &quot;1980s-1990s&quot;,
+         depth == 2000) %&gt;% 
+  ggplot(aes(lon, lat, fill = delta_OHC)) +
+  geom_raster() +
+  coord_quickmap(expand = 0,
+                 ylim = c(-85,65)) +
+  scale_fill_binned_diverging(
+    palette = &quot;Green-Brown&quot;,
+    name = expression(Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
+    breaks = seq(-2,2,0.5)
+  ) +
+  facet_wrap(~ delta_decade, ncol = 1) +
+  theme(axis.title = element_blank())
+
+p_CI_delta &lt;- ohc_decade_change %&gt;%
+  filter(delta_decade != &quot;1980s-1990s&quot;,
+         depth == 2000) %&gt;% 
+  arrange(delta_decade) %&gt;% 
+  group_by(lon, lat) %&gt;% 
+  mutate(delta_delta_OHC = delta_OHC - lag(delta_OHC),
+         delta_delta_decade = paste0(&quot;(&quot;,delta_decade,&quot;) - (&quot;, lag(delta_decade),&quot;)&quot;)) %&gt;% 
+  ungroup() %&gt;% 
+  filter(delta_decade == &quot;2000s-2010s&quot;) %&gt;% 
+  ggplot(aes(lon, lat, fill = delta_delta_OHC)) +
+  geom_raster() +
+  coord_quickmap(expand = 0,
+                 ylim = c(-85,65)) +
+  scale_fill_binned_divergingx(
+    palette = &quot;RdBu&quot;,
+    rev = TRUE,
+    name = expression(Delta * Delta * OHC ~ (10 ^ 9 ~ J * m ^ -2)),
+    breaks = seq(-2,2,0.5)
+  ) +
+  facet_wrap(~ delta_delta_decade, ncol = 1) +
+  theme(axis.title = element_blank())
+
+library(patchwork)
+p_CI_absolute / p_CI_delta + 
+  plot_annotation(tag_levels = &#39;A&#39;)</code></pre>
+<p><img src="figure/read_ohc_data.Rmd/decadal_changes_total_column_inventories-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggsave(path = here::here(&quot;output&quot;),
+       filename = &quot;FigS_OHC_column_inventory.png&quot;,
+       height = 10,
+       width = 8)</code></pre>
 </div>
 <div id="depth-layer-column-inventories" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Depth layer column inventories</h2>
@@ -1391,6 +1486,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/e53f770b4e0453f7da26de2e8d041fd1df5ac887/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" target="_blank">e53f770</a>
+</td>
+<td>
+jens-daniel-mueller
+</td>
+<td>
+2022-09-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jens-daniel-mueller/ocean_heat_and_carbon_content/blob/9d34eda8529741fd2e198e8966df4eb51c37e92c/docs/figure/read_ohc_data.Rmd/decadal_changes_column_inventories_depth_layer_total-1.png" target="_blank">9d34eda</a>
@@ -1547,31 +1653,31 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] lubridate_1.8.0  colorspace_2.0-2 forcats_0.5.1    stringr_1.4.0   
- [5] dplyr_1.0.7      purrr_0.3.4      readr_2.1.1      tidyr_1.1.4     
- [9] tibble_3.1.6     ggplot2_3.3.5    tidyverse_1.3.1  stars_0.5-5     
-[13] sf_1.0-5         abind_1.4-5      workflowr_1.7.0 
+ [1] patchwork_1.1.1  lubridate_1.8.0  colorspace_2.0-2 forcats_0.5.1   
+ [5] stringr_1.4.0    dplyr_1.0.7      purrr_0.3.4      readr_2.1.1     
+ [9] tidyr_1.1.4      tibble_3.1.6     ggplot2_3.3.5    tidyverse_1.3.1 
+[13] stars_0.5-5      sf_1.0-5         abind_1.4-5      workflowr_1.7.0 
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.2         sass_0.4.0         jsonlite_1.7.3     viridisLite_0.4.0 
- [5] modelr_0.1.8       bslib_0.3.1        assertthat_0.2.1   getPass_0.2-2     
- [9] highr_0.9          cellranger_1.1.0   yaml_2.2.1         pillar_1.6.4      
-[13] backports_1.4.1    glue_1.6.0         digest_0.6.29      promises_1.2.0.1  
-[17] rvest_1.0.2        htmltools_0.5.2    httpuv_1.6.5       pkgconfig_2.0.3   
-[21] broom_0.7.11       haven_2.4.3        scales_1.1.1       processx_3.5.2    
-[25] whisker_0.4        later_1.3.0        tzdb_0.2.0         git2r_0.29.0      
-[29] proxy_0.4-26       generics_0.1.1     farver_2.1.0       ellipsis_0.3.2    
-[33] withr_2.4.3        cli_3.1.1          magrittr_2.0.1     crayon_1.4.2      
-[37] readxl_1.3.1       evaluate_0.14      ps_1.6.0           fs_1.5.2          
-[41] fansi_1.0.2        xml2_1.3.3         lwgeom_0.2-8       class_7.3-20      
-[45] tools_4.1.2        hms_1.1.1          lifecycle_1.0.1    munsell_0.5.0     
-[49] reprex_2.0.1       callr_3.7.0        compiler_4.1.2     jquerylib_0.1.4   
-[53] e1071_1.7-9        rlang_1.0.2        classInt_0.4-3     units_0.7-2       
-[57] grid_4.1.2         rstudioapi_0.13    labeling_0.4.2     rmarkdown_2.11    
-[61] gtable_0.3.0       DBI_1.1.2          R6_2.5.1           knitr_1.37        
-[65] fastmap_1.1.0      utf8_1.2.2         rprojroot_2.0.2    KernSmooth_2.23-20
-[69] stringi_1.7.6      parallel_4.1.2     Rcpp_1.0.8         vctrs_0.3.8       
-[73] dbplyr_2.1.1       tidyselect_1.1.1   xfun_0.29         </code></pre>
+ [5] here_1.0.1         modelr_0.1.8       bslib_0.3.1        assertthat_0.2.1  
+ [9] getPass_0.2-2      highr_0.9          cellranger_1.1.0   yaml_2.2.1        
+[13] pillar_1.6.4       backports_1.4.1    glue_1.6.0         digest_0.6.29     
+[17] promises_1.2.0.1   rvest_1.0.2        htmltools_0.5.2    httpuv_1.6.5      
+[21] pkgconfig_2.0.3    broom_0.7.11       haven_2.4.3        scales_1.1.1      
+[25] processx_3.5.2     whisker_0.4        later_1.3.0        tzdb_0.2.0        
+[29] git2r_0.29.0       proxy_0.4-26       generics_0.1.1     farver_2.1.0      
+[33] ellipsis_0.3.2     withr_2.4.3        cli_3.1.1          magrittr_2.0.1    
+[37] crayon_1.4.2       readxl_1.3.1       evaluate_0.14      ps_1.6.0          
+[41] fs_1.5.2           fansi_1.0.2        xml2_1.3.3         lwgeom_0.2-8      
+[45] class_7.3-20       tools_4.1.2        hms_1.1.1          lifecycle_1.0.1   
+[49] munsell_0.5.0      reprex_2.0.1       callr_3.7.0        compiler_4.1.2    
+[53] jquerylib_0.1.4    e1071_1.7-9        rlang_1.0.2        classInt_0.4-3    
+[57] units_0.7-2        grid_4.1.2         rstudioapi_0.13    labeling_0.4.2    
+[61] rmarkdown_2.11     gtable_0.3.0       DBI_1.1.2          R6_2.5.1          
+[65] knitr_1.37         fastmap_1.1.0      utf8_1.2.2         rprojroot_2.0.2   
+[69] KernSmooth_2.23-20 stringi_1.7.6      parallel_4.1.2     Rcpp_1.0.8        
+[73] vctrs_0.3.8        dbplyr_2.1.1       tidyselect_1.1.1   xfun_0.29         </code></pre>
 </div>
 </div>
 </div>
